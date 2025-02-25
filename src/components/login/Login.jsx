@@ -15,6 +15,7 @@ const Login = ({ user }) => {
   const [imageSrc, setImageSrc] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [timeoutID, setTimeoutID] = useState("");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -72,6 +73,19 @@ const Login = ({ user }) => {
 
   const startWithGoogle = function (e) {
     e.preventDefault();
+
+    if (!(user !== "")) {
+      toast("You are already logged in! Redirecting you to your dashboard.");
+      setTimeoutID(
+        setTimeout(() => {
+          if (timeoutID !== "") clearTimeout(timeoutID);
+          navigate("/dashboard");
+        }, 3000),
+      );
+
+      return;
+    }
+
     authController
       .startWithOAuth2(CONST.uri.auth.GOOGLE_LOGIN)
       .then(onSuccessLogin)
@@ -109,6 +123,21 @@ const Login = ({ user }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Set loading state to true while the API request is in progress
+    setLoading(true);
+
+    if (!(user !== "")) {
+      toast("You are already logged in! Redirecting you to your dashboard.");
+      setTimeoutID(
+        setTimeout(() => {
+          if (timeoutID !== "") clearTimeout(timeoutID);
+          navigate("/dashboard");
+        }, 3000),
+      );
+
+      return;
+    }
+
     let newErrors = { ...errors };
 
     if (!formData.loginPassword) {
@@ -126,10 +155,11 @@ const Login = ({ user }) => {
     setErrors(newErrors);
 
     // Prevent submission if there are errors
-    if (!Object.values(errors).every((error) => error === "")) return;
-
-    // Set loading state to true while the API request is in progress
-    setLoading(true);
+    if (!Object.values(errors).every((error) => error === "")) {
+      toast.error("Please fill out the details properly!");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await authController.startWithCredentials({

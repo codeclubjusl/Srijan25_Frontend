@@ -30,6 +30,9 @@ function App() {
   };
 
   useEffect(() => {
+    const sid = localStorage.getItem("sid");
+    setUser(sid ?? "");
+
     const token = localStorage.getItem("token");
     if (token) verifyToken(token);
   }, [user]);

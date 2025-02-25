@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import Footer from "../Footer";
 import Navbar from "../Navbar";
 import About from "./About";
@@ -11,7 +10,7 @@ import Timeline from "./Timeline";
 import Sidebar from "./Sidebar";
 import Cards from "./Cards";
 import { Toaster } from "react-hot-toast";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import PageReveal from "../PageReveal";
 import Artists from "./Artists";
 import { Helmet } from "react-helmet-async";
@@ -40,12 +39,7 @@ function Loading() {
   );
 }
 
-export const LandingPage = ({ setUser }) => {
-  useEffect(() => {
-    const sid = localStorage.getItem("sid");
-    setUser(sid ?? "");
-  });
-
+export const LandingPage = () => {
   return (
     <Suspense fallback={<Loading />}>
       <main className="font-sometypeMono bg-background">

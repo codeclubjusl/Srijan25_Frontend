@@ -13,16 +13,19 @@ import ForgotPassword from "./components/login/ForgotPassword";
 import PageNotFound from "./components/PageNotFound";
 import AllEvents from "./components/Events/allevents/AllinoneEvents";
 import { WorkshopPage } from "./components/workshop/WorkshopPage";
+import Loading from "./components/Loading"
 
 import { ProtectedRoute } from "./components/protected_routes/AuthRoutes";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Notifications from "./components/protected_routes/Notifications";
 import { Toaster } from "react-hot-toast";
 import { logoutCall } from "./services/http/auth";
+import { uri } from "./config/endpoints";
 import Referral from "./components/login/Referral";
 
 function App() {
   const [user, setUser] = useState("");
+  const [checking, setChecking] = useState(true);
 
   const handleLogout = async () => {
     setUser("");
@@ -56,26 +59,14 @@ function App() {
             element={<EventRegistration />}
           />
           <Route>
-            <Route
-              path="/merchandise"
-              element={
-                <ProtectedRoute accessAllowed={!!user}>
-                  <MerchandisePage />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-          <Route>
-            <Route
-              path="/notifications"
-              element={
-                // <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <Notifications user={user} />
-                // </ProtectedRoute>
-              }
-            />
-          </Route>
-          {/* <Route path="/events" element={<Eventpage />} /> */}
+            {/* <Route path="/merchandise" element={
+             <ProtectedRoute checkUserSession={checkUserSession} logout={logout}>
+             <MerchandisePage />
+           </ProtectedRoute>
+              } /> */}
+              <Route path="/merchandise" element={ <MerchandisePage />}/>
+            </Route>
+          <Route path="/events" element={<Eventpage />} />
           <Route path="/eventregistration" element={<EventRegistration />} />
           <Route
             path="/signup"

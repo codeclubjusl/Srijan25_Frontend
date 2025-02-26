@@ -180,7 +180,7 @@ function Loading() {
   </div>
 }
 // FancyButton component for animated buttons
-const FancyButton = ({ active, onClick, children }) => {
+export const FancyButton = ({ active, onClick, children }) => {
   const [ripples, setRipples] = useState([]);
 
   const createRipple = (event) => {

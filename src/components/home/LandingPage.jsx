@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import Footer from "../Footer";
 import Navbar from "../Navbar";
 import About from "./About";
@@ -10,8 +9,7 @@ import Sponsors from "./Sponsors";
 import Timeline from "./Timeline";
 import Sidebar from "./Sidebar";
 import Cards from "./Cards";
-import { Toaster } from "react-hot-toast";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import PageReveal from "../PageReveal";
 import Artists from "./Artists";
 import { Helmet } from "react-helmet-async";
@@ -40,12 +38,7 @@ function Loading() {
   );
 }
 
-export const LandingPage = ({ setUser }) => {
-  useEffect(() => {
-    const sid = localStorage.getItem("sid");
-    setUser(sid ?? "");
-  });
-
+export const LandingPage = () => {
   return (
     <Suspense fallback={<Loading />}>
       <main className="font-sometypeMono bg-background">
@@ -56,29 +49,6 @@ export const LandingPage = ({ setUser }) => {
             content="Official Website for Srijan'25 - The Annual Techno-Management Fest of Jadavpur University"
           />
         </Helmet>
-        <Toaster
-          toastOptions={{
-            duration: 2000,
-            style: {
-              backgroundColor: "#141414",
-              borderRadius: "0px",
-              fontSize: "24px",
-              padding: "12px",
-              color: "white",
-              borderTop: "1px solid #b60000",
-              borderLeft: "1px solid #b60000",
-              borderBottom: "1px solid #532e8f",
-              borderRight: "1px solid #532e8f",
-              zIndex: 1005,
-              textAlign: "center",
-            },
-          }}
-          containerStyle={{
-            top: "15vh",
-            right: "40vw",
-            left: "40vw",
-          }}
-        />
         <PageReveal />
         <Navbar />
         <Sidebar />

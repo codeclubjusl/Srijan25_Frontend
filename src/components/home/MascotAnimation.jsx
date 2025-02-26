@@ -10,12 +10,14 @@ function ModelFallback() {
 function MascotAnimation({ scale = 4, wave = true }) {
 
   return (
-    <Canvas className="h-full w-full" fallback={<ModelFallback />}>
-      <ambientLight />
-      <directionalLight position={[-5, 5, 5]} intensity={2} color={"#ffffff"} />
-      <directionalLight position={[5, 5, 5]} intensity={2} color={"#ffffff"} />
-      <Model position={[0, -3, 0]} scale={scale} wave={wave} />
-    </Canvas >)
+    <>j</>
+    // <Canvas className="h-full w-full" fallback={<ModelFallback />}>
+    //   <ambientLight />
+    //   <directionalLight position={[-5, 5, 5]} intensity={2} color={"#ffffff"} />
+    //   <directionalLight position={[5, 5, 5]} intensity={2} color={"#ffffff"} />
+    //   <Model position={[0, -3, 0]} scale={scale} wave={wave} />
+    // </Canvas >
+    )
 }
 
 export default MascotAnimation;

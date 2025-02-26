@@ -11,7 +11,7 @@ import EmailVerify from "./components/login/EmailVerify";
 import ResetPassword from "./components/login/ResetPassword";
 import ForgotPassword from "./components/login/ForgotPassword";
 import PageNotFound from "./components/PageNotFound";
-import AllEvents from "./components/Events/allevents/AllinoneEvents"
+import AllEvents from "./components/Events/allevents/AllinoneEvents";
 import { WorkshopPage } from "./components/workshop/WorkshopPage";
 
 import { ProtectedRoute } from "./components/protected_routes/AuthRoutes";
@@ -31,36 +31,30 @@ function App() {
     await logoutCall();
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) verifyToken(token);
-  }, [user]);
-
-  const verifyToken = async (token) => {
-    const headers = { Authorization: `Bearer ${token}` };
-    const response = await fetch("/api/verify", { headers });
-    if (response.ok) {
-      setUser(token);
-    } else {
-      setUser("");
-      localStorage.removeItem("sid");
-    }
+  const setActiveUser = () => {
+    const sid = localStorage.getItem("sid");
+    setUser(sid ?? "");
   };
+
+  useEffect(setActiveUser, [user]);
 
   return (
     <>
       <Router>
         <Routes>
-          <Route index element={<LandingPage setUser={setUser} />} />
+          <Route index element={<LandingPage />} />
           <Route element={<ProtectedRoute accessAllowed={!!user} />}>
             <Route
               path="/dashboard"
-              element={<DashboardPage userID={user} logout={handleLogout} />}
+              element={<DashboardPage logout={handleLogout} />}
             />
           </Route>
           <Route path="/events" element={<Eventpage />} />
           <Route path="/events/:category/:eventID" element={<AllEvents />} />
-          <Route path="/events/:category/:eventID/:registration" element={<EventRegistration/>}/>
+          <Route
+            path="/events/:category/:eventID/:registration"
+            element={<EventRegistration />}
+          />
           <Route>
             <Route
               path="/merchandise"
@@ -85,11 +79,11 @@ function App() {
           <Route path="/eventregistration" element={<EventRegistration />} />
           <Route
             path="/signup"
-            element={<Signup user={user} setUser={setUser} />}
+            element={<Signup user={user} setActiveUser={setActiveUser} />}
           />
           <Route
             path="/login"
-            element={<Login user={user} setUser={setUser} />}
+            element={<Login user={user} setActiveUser={setActiveUser} />}
           />
           <Route path="/referral" element={<Referral />} />
           <Route path="/verify" element={<EmailVerify />} />
@@ -99,7 +93,24 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          duration: 2000,
+          style: {
+            backgroundColor: "#141414",
+            borderRadius: "6px",
+            fontSize: "16px",
+            padding: "6px",
+            color: "white",
+            borderTop: "1px solid #b60000",
+            borderLeft: "1px solid #b60000",
+            borderBottom: "1px solid #532e8f",
+            borderRight: "1px solid #532e8f",
+            zIndex: 1005,
+            textAlign: "center",
+          },
+        }}
+      />
     </>
   );
 }

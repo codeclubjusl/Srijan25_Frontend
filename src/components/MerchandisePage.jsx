@@ -16,6 +16,7 @@ export default function MerchandisePage() {
   const [selectedSize, setSelectedSize] = useState('M');
   const [selectedColor, setSelectedColor] = useState('Black');
   const [showOrderForm, setShowOrderForm] = useState(false);
+  const [orderStatus, setOrderStatus] = useState('pending'); // Add order status state: 'pending', 'confirmed', or 'rejected'
   const contacts = [
     { id: 1, upi: "user1@upi" },
     { id: 2, upi: "user2@upi" },
@@ -49,6 +50,48 @@ export default function MerchandisePage() {
     }
   };
 
+  // Status button component
+  const StatusButton = ({ status, currentStatus, onClick }) => {
+    // Define styles based on status type
+    const getStatusStyles = () => {
+      switch (status) {
+        case 'confirmed':
+          return {
+            background: currentStatus === status ? 'bg-green-600' : 'bg-zinc-800',
+            border: currentStatus === status ? 'border-green-400' : 'border-gray-500',
+            hoverBg: 'hover:bg-green-700',
+            text: 'Confirmed'
+          };
+        case 'rejected':
+          return {
+            background: currentStatus === status ? 'bg-red-600' : 'bg-zinc-800',
+            border: currentStatus === status ? 'border-red-400' : 'border-gray-500',
+            hoverBg: 'hover:bg-red-700',
+            text: 'Rejected'
+          };
+        case 'pending':
+        default:
+          return {
+            background: currentStatus === status ? 'bg-yellow-600' : 'bg-zinc-800',
+            border: currentStatus === status ? 'border-yellow-400' : 'border-gray-500',
+            hoverBg: 'hover:bg-yellow-700',
+            text: 'Pending'
+          };
+      }
+    };
+
+    const styles = getStatusStyles();
+
+    return (
+      <button
+        className={`px-4 py-2 text-white text-sm font-medium rounded ${styles.background} ${styles.hoverBg} border ${styles.border} transition-colors duration-200`}
+        onClick={() => onClick(status)}
+      >
+        {styles.text}
+      </button>
+    );
+  };
+
   return (
     <div className="bg-background font-sometypeMono text-white min-h-screen flex flex-col">
       <Navbar />
@@ -79,15 +122,33 @@ export default function MerchandisePage() {
           {/* Image Container and the 4-row grid */}
           <div className="w-full md:w-2/3 flex flex-col md:flex-row items-center mb-6 md:mb-0 relative">
             {/* Image Container */}
-            <div className="w-4/5 md:w-1/2 mb-8 sm:mb-0 flex justify-center">
+            <div className="w-4/5 md:w-1/2 mb-8 sm:mb-0 flex flex-col items-center justify-center">
               <img
                 src="/shirt.svg"
                 alt="T-Shirt"
                 className="w-full max-w-md ml-5 sm:ml-0"
               />
+              
+              
+              {/*<div className="flex space-x-3 mt-4" style={{marginTop:"100px"}}>
+                <StatusButton
+                  status="pending"
+                  currentStatus={orderStatus}
+                  onClick={setOrderStatus}
+                />
+                <StatusButton
+                  status="confirmed"
+                  currentStatus={orderStatus}
+                  onClick={setOrderStatus}
+                />
+                <StatusButton
+                  status="rejected"
+                  currentStatus={orderStatus}
+                  onClick={setOrderStatus}
+                />
+              </div>*/}
             </div>
 
-            {/* 4-row Grid between image and vertical line - ADJUSTED POSITIONING */}
             <div className="w-full md:w-1/2 flex flex-col border border-gray-500 bg-background mt-4 md:mt-0 md:ml-12" style={{ maxWidth: "290px" }}>
               {/* Row 1: Size Label */}
               <div className="border-b border-gray-500 p-2">
@@ -274,23 +335,6 @@ export default function MerchandisePage() {
                          hover:file:bg-green-200"
                     />
                   </div>
-
-                  {/* <div className="mb-6"> */}
-                  {/*   <label className="block text-sm font-medium mb-2" htmlFor="paymentProof"> */}
-                  {/*     Payment Proof */}
-                  {/*   </label> */}
-                  {/*   <input */}
-                  {/*     type="file" */}
-                  {/*     accept="image/*" */}
-                  {/*     id="paymentProof" */}
-                  {/*     className="block w-full text-sm text-gray-400 */}
-                  {/*          file:mr-4 file:py-2 file:px-4 */}
-                  {/*          file:rounded-lg file:border-0 */}
-                  {/*          file:text-sm file:font-semibold */}
-                  {/*          file:bg-green-500 file:text-white */}
-                  {/*          hover:file:bg-green-600" */}
-                  {/*   /> */}
-                  {/* </div> */}
 
                   <div className="flex justify-between">
                     <button
